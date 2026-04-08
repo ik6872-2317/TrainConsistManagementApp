@@ -1,52 +1,53 @@
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
-/**
- * ==============================================================
- * MAIN CLASS - UseCase7TrainConsistMgmnt
- * ==============================================================
- */
-public class TrainConsistManagementApp {
+class Bogie {
+    private String name;
+    private int capacity;
 
-    static class Bogie {
-        String name;
-        int capacity;
-
-        Bogie(String name, int capacity) {
-            this.name = name;
-            this.capacity = capacity;
-        }
-
-        @Override
-        public String toString() {
-            return name + " -> " + capacity;
-        }
+    public Bogie(String name, int capacity) {
+        this.name = name;
+        this.capacity = capacity;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public int getCapacity() {
+        return capacity;
+    }
+
+    public void display() {
+        System.out.println(name + " - Capacity: " + capacity);
+    }
+}
+
+public class TrainConsistManagementApp {
     public static void main(String[] args) {
-        System.out.println("==============================================");
-        System.out.println(" UC7 - Sort Bogies by Capacity (Comparator) ");
-        System.out.println("==============================================\n");
 
-        List<Bogie> bogies = new ArrayList<>();
-        bogies.add(new Bogie("Sleeper", 72));
-        bogies.add(new Bogie("AC Chair", 56));
-        bogies.add(new Bogie("First Class", 24));
-        bogies.add(new Bogie("General", 90));
+        // Step 1: Create and populate bogie list (reuse from UC7)
+        List<Bogie> bogieList = new ArrayList<>();
+        bogieList.add(new Bogie("Sleeper", 72));
+        bogieList.add(new Bogie("AC Chair", 56));
+        bogieList.add(new Bogie("First Class", 24));
+        bogieList.add(new Bogie("Super Sleeper", 80)); // extra example
 
-        System.out.println("Before Sorting:");
-        for (Bogie b : bogies) {
-            System.out.println(b);
+        // Step 2: Apply Stream filtering (capacity > 60)
+        List<Bogie> filteredBogies = bogieList.stream()
+                .filter(b -> b.getCapacity() > 60)
+                .collect(Collectors.toList());
+
+        // Step 3: Display filtered bogies
+        System.out.println("Bogies with capacity greater than 60:");
+        for (Bogie b : filteredBogies) {
+            b.display();
         }
 
-        bogies.sort(Comparator.comparingInt(b -> b.capacity));
-
-        System.out.println("\nAfter Sorting by Capacity:");
-        for (Bogie b : bogies) {
-            System.out.println(b);
+        // Step 4: Verify original list remains unchanged
+        System.out.println("\nOriginal bogie list:");
+        for (Bogie b : bogieList) {
+            b.display();
         }
-
-        System.out.println("\nUC7 sorting completed...");
     }
 }
